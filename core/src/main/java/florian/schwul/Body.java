@@ -2,8 +2,8 @@ package florian.schwul;
 
 import com.badlogic.gdx.Gdx;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +26,8 @@ public class Body extends Movable{
         baseVelocity = new Vector(bx,by);
     }
     public void addForceTowards(Body b) {
-        float r = (float) Math.sqrt((x-b.x)*(x-b.x) + (y-b.y)*(y-b.y));
-        float f = (float) (G * (mass*b.mass)/(r*r));
+        float r = (float) ((x-b.x)*(x-b.x) + (y-b.y)*(y-b.y));
+        float f = (float) (G * (mass*b.mass)/(r+10));
         Vector v = new Vector(b.x-x,b.y-y).normal();
         v.multiply(f);
         totalForce.addVectorForce(v);
@@ -39,9 +39,9 @@ public class Body extends Movable{
     }
     public void applyVelocity() {
         trace.add(new Vector(x,y));
-        if (trace.size()>10000) trace.remove(0);
-        x+= velocity.x;
-        y+= velocity.y;
+        if (trace.size()>10000) trace.remove(trace.getFirst());
+        x+= velocity.x*Gdx.graphics.getDeltaTime();
+        y+= velocity.y*Gdx.graphics.getDeltaTime();
     }
     public void clearVelocity() {
         velocity.clear();

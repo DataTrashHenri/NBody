@@ -19,7 +19,7 @@ public class Main extends ApplicationAdapter {
 
     Vector v = new Vector(0,1);
     float t =0;
-    float mass =100;
+    float mass =10;
 
 
     @Override
@@ -44,8 +44,8 @@ public class Main extends ApplicationAdapter {
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) mass+=10;
-        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) mass-=10;
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) mass*=1+2*Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) mass/=1+2*Gdx.graphics.getDeltaTime();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             Body b = new Body(50,300f,mass,v.x*30,v.y*30);
@@ -67,8 +67,8 @@ public class Main extends ApplicationAdapter {
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
         {
-            Body b = new Body(mouseX,mouseY,mass,v.x*30,v.y*30);
-            b.totalForce.addVectorForce(new Vector(v.x*30,v.y*30));
+            Body b = new Body(mouseX,mouseY,mass,v.x*1000,v.y*1000);
+            b.totalForce.addVectorForce(new Vector(v.x*1000,v.y*1000));
             space.addBody(b);
         }
         if ( Gdx.input.isKeyPressed(Input.Keys.E)) t+=0.05f;
@@ -76,7 +76,7 @@ public class Main extends ApplicationAdapter {
 
 
 
-        shapeRenderer.rect(mouseX-(mass/2)/10,mouseY-(mass/2)/10,mass/10,mass/10);
+        shapeRenderer.rect((float) (mouseX-Math.sqrt(mass)), (float) (mouseY-Math.sqrt(mass)), (float) Math.sqrt(mass)*2f,(float) Math.sqrt(mass)*2f);
         shapeRenderer.line(mouseX,mouseY,(mouseX+v.x*40),(mouseY+v.y*40));
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) space.bodies.clear();
